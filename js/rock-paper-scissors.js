@@ -11,12 +11,14 @@ function getComputerChoice(){
 }
 
 function playRound(playerSelection, computerSelection){
-    if(playerSelection.toLowerCase() === 'rock'){
-        if(computerSelection.toLowerCase() === 'rock'){
+    console.log(`Player selected: ${playerSelection}`);
+    console.log(`Computer selected: ${computerSelection}`);
+    if(playerSelection === 'Rock'){
+        if(computerSelection === 'Rock'){
             console.log(`Its a tie! Both selected ${playerSelection}`);
             return 3; // means a tie
         }
-        else if(computerSelection.toLowerCase() === 'paper'){
+        else if(computerSelection === 'Paper'){
             console.log(`You loose! ${computerSelection} beats ${playerSelection}`);
             return 2; // means computer wins
         }
@@ -26,12 +28,12 @@ function playRound(playerSelection, computerSelection){
         }
     }
 
-    else if(playerSelection.toLowerCase() === 'paper'){
-        if(computerSelection.toLowerCase() === 'rock'){
+    else if(playerSelection === 'Paper'){
+        if(computerSelection === 'Rock'){
             console.log(`You win! ${playerSelection} beats ${computerSelection}`);
             return 1;
         }
-        else if(computerSelection.toLowerCase() === 'paper'){
+        else if(computerSelection === 'Paper'){
             console.log(`Its a tie! Both selected ${playerSelection}`);
             return 3;
         }
@@ -42,11 +44,11 @@ function playRound(playerSelection, computerSelection){
     }
 
     else{ //player selected Scissors
-        if(computerSelection.toLowerCase() === 'rock'){
+        if(computerSelection === 'Rock'){
             console.log(`You loose! ${computerSelection} beats ${playerSelection}`);
             return 2;
         }
-        else if(computerSelection.toLowerCase() === 'paper'){
+        else if(computerSelection === 'Paper'){
             console.log(`You win! ${playerSelection} beats ${computerSelection}`);
             return 1;
         }
@@ -55,8 +57,16 @@ function playRound(playerSelection, computerSelection){
             return 3;
         }
     }
+    
+}
 
-    console.log('Round finished!\n');
+function isValidOption(input){
+    if(input === 'rock' || input === 'paper' || input === 'scissors'){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 
 function game(){
@@ -67,8 +77,13 @@ function game(){
     let computerScore = 0;
     for(let i=0; i<5; i++){
         playerSelection = prompt('Please choose rock, paper or scissors');
+        playerSelection = playerSelection.toLocaleLowerCase();
+        while(!isValidOption(playerSelection)){
+            playerSelection = prompt('Error, invalid input, please choose rock, paper or scissors');
+        }
+        playerSelection = playerSelection[0].toUpperCase() + playerSelection.slice(1);
         computerSelection =  getComputerChoice();
-        partialResult = playGame(playerSelection, computerSelection);
+        partialResult = playRound(playerSelection, computerSelection);
         switch(partialResult){
             case 1:
                 playerScore++;
@@ -85,6 +100,7 @@ function game(){
                 break;
         }
     }
+    
     console.log(`Player Score: ${playerScore}`);
     console.log(`Computer Score: ${computerScore}`);
     if(playerScore > computerScore){
@@ -99,9 +115,4 @@ function game(){
 }
 
 
-
-let playerSelection = "Rock";
-let computerSelection = getComputerChoice();
-console.log(`Player selected: ${playerSelection}`);
-console.log(`Computer selected: ${computerSelection}`);
-console.log(playRound(playerSelection, computerSelection));
+game();
